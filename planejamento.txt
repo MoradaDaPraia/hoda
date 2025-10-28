@@ -1,0 +1,29 @@
+Hoda: Um Organizador de Tarefas por Projeto
+
+A entidade principal do Hoda é um Projeto sendo assim:
+
+Projeto
+    - Id (integer, global auto increment)
+    - Codinome (texto, unico)
+    - Nome (texto)
+    - Descrição (opcional)
+    - Colaboradores
+    - Tarefas
+
+Colaborador
+    - Id (integer, global auto increment)
+    - Nome (texto)
+    - Codinome (texto, unico)
+    - Senha (texto, opcional)
+    - Tarefas 
+    - Projetos
+
+Tarefa
+    - Id (integer, global auto increment)
+    - Código (integer, projeto auto increment)
+    - Nome (texto)
+    - Descrição (texto, opcional)
+    - Projeto (...)
+    - Criador (Colaborador)
+    - Responsável (Colaborador)
+    - Status (enum, a fazer, em andamento, concluído)
