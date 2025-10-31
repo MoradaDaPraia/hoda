@@ -1,3 +1,4 @@
 .venv
 **/__pycache__/**
-__data__/*.csv
+__data__/*
+!__data__/.gitkeep

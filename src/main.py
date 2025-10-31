@@ -8,4 +8,4 @@ if __name__ == "__main__":
     projeto_service = ProjetoService(projeto_repository)
     projeto_presenter = ProjetoPresenter(projeto_service)
 
-    print(projeto_presenter)
+    projeto_presenter.menu()
