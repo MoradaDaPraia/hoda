@@ -8,11 +8,12 @@ DESCRICAO_DO_PROJETO_INVALIDA = (
     "Descrição do projeto inválida, pode ter no máximo 255 caracteres."
 )
 JA_EXISTE_PROJETO_COM_ESTE_CODINOME = "Já existe um projeto com este codinome."
+ESTE_PROJETO_NAO_EXISTE = "Este projeto não existe."
 
 
 class ProjetoService:
     def __init__(self, projeto_repository: ProjetosRepository) -> None:
-        self.projeto_repository = projeto_repository
+        self.projetos_repository = projeto_repository
 
     def __validar_nome(self, nome: str) -> bool:
         return len(nome) >= 2 and len(nome) <= 32
@@ -36,9 +37,22 @@ class ProjetoService:
         if not self.__validar_descricao(descricao):
             raise ServiceException(DESCRICAO_DO_PROJETO_INVALIDA)
 
-        if self.projeto_repository.consultar_projeto_por_codinome(codinome) is not None:
+        if (
+            self.projetos_repository.consultar_projeto_por_codinome(codinome)
+            is not None
+        ):
             raise ServiceException(JA_EXISTE_PROJETO_COM_ESTE_CODINOME)
 
-        projeto = self.projeto_repository.inserir_projeto(nome, codinome, descricao)
+        projeto = self.projetos_repository.inserir_projeto(nome, codinome, descricao)
+
+        return projeto
+
+    def consultar_projeto(self, codinome: str) -> ProjetoDTO:
+        if not self.__validar_codinome(codinome):
+            raise ServiceException(CODINOME_DO_PROJETO_INVALIDO)
+
+        projeto = self.projetos_repository.consultar_projeto_por_codinome(codinome)
+        if projeto is None:
+            raise ServiceException(ESTE_PROJETO_NAO_EXISTE)
 
         return projeto

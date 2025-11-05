@@ -1,4 +1,4 @@
-from services.projeto import ProjetoService
+from services.projeto import ProjetoService, ESTE_PROJETO_NAO_EXISTE
 from exceptions.service import ServiceException
 
 
@@ -10,6 +10,7 @@ class ProjetoPresenter:
         opcoes = [
             ("Sair", None),
             ("Criar", self.criar),
+            ("Consultar", self.consultar),
         ]
         selecao = 999
         while selecao != 0:
@@ -28,7 +29,7 @@ class ProjetoPresenter:
             if selecao == 0:
                 break
 
-            nome, funcao = opcoes[selecao]
+            _, funcao = opcoes[selecao]
             print()
             funcao()
 
@@ -48,6 +49,20 @@ class ProjetoPresenter:
             except ServiceException as e:
                 print(f"ERRO: {e}\n")
 
-        print(
-            f'O projeto {projeto.codinome} "{projeto.nome}" foi criado com sucesso!\n'
-        )
+        print(f"{projeto}\nO projeto foi criado com sucesso!\n")
+
+    def consultar(self) -> None:
+        projeto = None
+        while projeto is None:
+            print("Consultar Projeto")
+            print("Insira o codinome do projeto")
+            codinome = input(": ")
+            try:
+                projeto = self.projeto_service.consultar_projeto(codinome)
+            except ServiceException as e:
+                print(f"ERRO: {e}\n")
+                if str(e) == ESTE_PROJETO_NAO_EXISTE:
+                    return
+                continue
+
+        print(f"{projeto}\n")

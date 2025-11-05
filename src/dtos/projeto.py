@@ -4,3 +4,9 @@ class ProjetoDTO:
         self.nome = nome
         self.codinome = codinome
         self.descricao = descricao
+
+    def __str__(self) -> str:
+        return f"""Projeto
+    Nome: {self.nome}
+    Codinome: {self.codinome}
+    Descricao: {self.descricao}"""
