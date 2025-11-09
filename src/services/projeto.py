@@ -12,8 +12,8 @@ ESTE_PROJETO_NAO_EXISTE = "Este projeto não existe."
 
 
 class ProjetoService:
-    def __init__(self, projeto_repository: ProjetosRepository) -> None:
-        self.projetos_repository = projeto_repository
+    def __init__(self, projetos_repository: ProjetosRepository) -> None:
+        self.projetos_repository = projetos_repository
 
     def __validar_nome(self, nome: str) -> bool:
         return len(nome) >= 2 and len(nome) <= 32

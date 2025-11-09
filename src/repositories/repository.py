@@ -17,6 +17,31 @@ class Repository(ABC):
                 );
                 """
             )
+            cursor.execute(
+                """
+                CREATE TABLE IF NOT EXISTS colaboradores (
+                    id INTEGER NOT NULL PRIMARY KEY,
+                    nome TEXT NOT NULL,
+                    codinome TEXT NOT NULL,
+                    senha_hash TEXT NOT NULL
+                );
+                """
+            )
+            cursor.execute(
+                """
+                CREATE TABLE IF NOT EXISTS projetos_colaboradores (
+                    id INTEGER NOT NULL PRIMARY KEY,
+                    projeto_id INTEGER NOT NULL,
+                    colaborador_id INTEGER NOT NULL,
+                    FOREIGN KEY (projeto_id)
+                        REFERENCES projetos (id)
+                        ON DELETE CASCADE,
+                    FOREIGN KEY (colaborador_id)
+                        REFERENCES colaboradores (id)
+                        ON DELETE CASCADE
+                );
+                """
+            )
 
             connection.commit()
 
