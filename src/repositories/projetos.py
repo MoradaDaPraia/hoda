@@ -1,3 +1,4 @@
+from dtos.colaborador import ColaboradorDTO
 from dtos.projeto import ProjetoDTO
 from exceptions.internal import InternalException
 from repositories.repository import Repository
@@ -47,3 +48,20 @@ class ProjetosRepository(Repository):
 
             connection.commit()
             return ProjetoDTO(id, nome, codinome_retornado, descricao)
+
+    def adicionar_colaborador_ao_projeto(
+        self, projeto: ProjetoDTO, colaborador: ColaboradorDTO
+    ) -> None:
+        with self.connect() as connection:
+            cursor = connection.cursor()
+
+            cursor.execute(
+                """
+               INSERT INTO projetos_colaboradores (
+                   projeto_id, colaborador_id
+               ) VALUES ( ?, ? );
+               """,
+                (projeto.id, colaborador.id),
+            )
+
+            connection.commit()

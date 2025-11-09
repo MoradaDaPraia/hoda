@@ -1,8 +1,6 @@
-from os import pread
 from presenters.projeto import ProjetoPresenter
 from presenters.colaborador import ColaboradorPresenter
 from presenters.presenter import Presenter
-from services.projeto import ProjetoService
 
 
 class PrincipalPresenter(Presenter):

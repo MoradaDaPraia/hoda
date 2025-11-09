@@ -4,6 +4,7 @@ from filters.colaborador import ColaboradorFilter
 from repositories.colaboradores import ColaboradoresRepository
 import hashlib
 
+
 NOME_DO_COLABORADOR_INVALIDO = (
     "Nome do colaborador inválido, deve ter entre 8-64 caracteres."
 )
@@ -14,10 +15,14 @@ SENHA_DO_COLABORADOR_INVALIDA = (
 JA_EXISTE_COLABORADOR_COM_ESTE_CODINOME = (
     "Já existe um colaborador cadastrado com este codinome."
 )
+COLABORADOR_NAO_ENCONTRADO = "Colaborador não existe ou não foi encontrado."
 
 
 class ColaboradorService:
-    def __init__(self, colaboradores_repository: ColaboradoresRepository) -> None:
+    def __init__(
+        self,
+        colaboradores_repository: ColaboradoresRepository,
+    ) -> None:
         self.colaboradores_repository = colaboradores_repository
 
     def __validar_nome(self, nome: str) -> bool:
@@ -53,6 +58,18 @@ class ColaboradorService:
         colaborador = self.colaboradores_repository.inserir_colaborador(
             nome, codinome, senha_hash
         )
+
+        return colaborador
+
+    def consultar_colaborador(self, codinome: str) -> ColaboradorDTO:
+        if not self.__validar_codinome(codinome):
+            raise ServiceException(CODINOME_DO_COLABORADOR_INVALIDO)
+
+        colaborador = self.colaboradores_repository.consultar_colaborador_por_codinome(
+            codinome
+        )
+        if colaborador is None:
+            raise ServiceException(COLABORADOR_NAO_ENCONTRADO)
 
         return colaborador
 

@@ -65,9 +65,18 @@ class ProjetoService:
 
         return projeto
 
-    def listar_colaboradores_do_projeto(
-        self, projeto: ProjetoDTO
-    ) -> list[ColaboradorDTO]:
+    def listar_colaboradores_do_projeto(self, codinome: str) -> list[ColaboradorDTO]:
+        projeto = self.consultar_projeto(codinome)
         return self.colaborador_service.listar_colaboradores(
-            ColaboradorFilter(projeto=projeto)
+            ColaboradorFilter(projeto_id=projeto.id)
         )
+
+    def adicionar_colaborador_ao_projeto(
+        self, codinome: str, colaborador_codinome: str
+    ) -> None:
+        projeto = self.consultar_projeto(codinome)
+        colaborador = self.colaborador_service.consultar_colaborador(
+            colaborador_codinome
+        )
+
+        self.projetos_repository.adicionar_colaborador_ao_projeto(projeto, colaborador)

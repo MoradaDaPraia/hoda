@@ -66,7 +66,7 @@ class ColaboradoresRepository(Repository):
                 FROM colaboradores c
                 """
             params = []
-            if colaborador_filter.projeto is not None:
+            if colaborador_filter.projeto_id is not None:
                 query += (
                     "INNER JOIN projetos_colaboradores pc ON pc.colaborador_id = c.id "
                 )
@@ -75,9 +75,9 @@ class ColaboradoresRepository(Repository):
                 query += "AND LOWER(c.nome) LIKE LOWER(?) "
                 params.append(f"%{colaborador_filter.nome}%")
 
-            if colaborador_filter.projeto is not None:
+            if colaborador_filter.projeto_id is not None:
                 query += "AND pc.projeto_id = ? "
-                params.append(colaborador_filter.projeto.id)
+                params.append(colaborador_filter.projeto_id)
 
             query += ";"
 

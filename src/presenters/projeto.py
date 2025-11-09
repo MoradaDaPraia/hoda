@@ -16,6 +16,7 @@ class ProjetoPresenter(Presenter):
                 ("Criar", self.criar),
                 ("Consultar", self.consultar),
                 ("Listar Colaboradores", self.listar_colaboradores),
+                ("Adicionar Colaborador", self.adicionar_colaborador),
             ],
         )
 
@@ -60,16 +61,9 @@ class ProjetoPresenter(Presenter):
             print("Insira o codinome do projeto")
             codinome = input(": ")
 
-            projeto = None
-            try:
-                projeto = self.projeto_service.consultar_projeto(codinome)
-            except ServiceException as e:
-                print(f"ERRO: {e}\n")
-                continue
-
             try:
                 colaboradores = self.projeto_service.listar_colaboradores_do_projeto(
-                    projeto
+                    codinome
                 )
             except ServiceException as e:
                 print(f"ERRO: {e}\n")
@@ -82,3 +76,22 @@ class ProjetoPresenter(Presenter):
                     print(colaborador)
 
             print()
+
+    def adicionar_colaborador(self) -> None:
+        while True:
+            print("Adicionar Colaborador ao Projeto")
+            print("Insira o codinome do projeto")
+            codinome = input(": ")
+            print("Insira o codinome do colaborador")
+            colaborador_codinome = input(": ")
+
+            try:
+                self.projeto_service.adicionar_colaborador_ao_projeto(
+                    codinome, colaborador_codinome
+                )
+            except ServiceException as e:
+                print(f"ERRO: {e}\n")
+                continue
+
+            print("O colaborador foi adicionado com sucesso!\n")
+            break
