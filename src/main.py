@@ -11,8 +11,8 @@ if __name__ == "__main__":
     projetos_repository = ProjetosRepository()
     colaboradores_repository = ColaboradoresRepository()
 
-    projeto_service = ProjetoService(projetos_repository)
     colaborador_service = ColaboradorService(colaboradores_repository)
+    projeto_service = ProjetoService(projetos_repository, colaborador_service)
 
     projeto_presenter = ProjetoPresenter(projeto_service)
     colaborador_presenter = ColaboradorPresenter(colaborador_service)

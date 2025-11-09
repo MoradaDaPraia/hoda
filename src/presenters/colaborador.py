@@ -1,4 +1,5 @@
 from exceptions.service import ServiceException
+from filters.colaborador import ColaboradorFilter
 from presenters.presenter import Presenter
 from services.colaborador import ColaboradorService
 
@@ -14,6 +15,7 @@ class ColaboradorPresenter(Presenter):
             [
                 ("Sair", None),
                 ("Criar", self.criar),
+                ("Listar", self.listar),
             ],
         )
 
@@ -36,3 +38,28 @@ class ColaboradorPresenter(Presenter):
                 print(f"ERRO: {e}\n")
 
             print(f"{colaborador}\nO colaborador foi criado com sucesso!\n")
+
+    def listar(self) -> None:
+        colaboradores = None
+        while colaboradores is None:
+            print("Listar Colaboradores")
+            print("Filtre pelo nome do colaborador (opcional)")
+            nome = input(": ")
+            if len(nome.strip()) == 0:
+                nome = None
+
+            try:
+                colaboradores = self.colaborador_service.listar_colaboradores(
+                    ColaboradorFilter(nome=nome)
+                )
+            except ServiceException as e:
+                print(f"ERRO: {e}\n")
+                continue
+
+            if len(colaboradores) == 0:
+                print("Nenhum colaborador foi encontrado.")
+            else:
+                for colaborador in colaboradores:
+                    print(colaborador)
+
+            print()

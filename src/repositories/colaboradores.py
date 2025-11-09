@@ -1,3 +1,5 @@
+from dtos.projeto import ProjetoDTO
+from filters.colaborador import ColaboradorFilter
 from dtos.colaborador import ColaboradorDTO
 from exceptions.internal import InternalException
 from repositories.repository import Repository
@@ -51,3 +53,41 @@ class ColaboradoresRepository(Repository):
 
             connection.commit()
             return ColaboradorDTO(id, nome, codinome_retornado, senha_hash)
+
+    def listar_colaboradores_por_filtro(
+        self, colaborador_filter: ColaboradorFilter
+    ) -> list[ColaboradorDTO]:
+        with self.connect() as connection:
+            cursor = connection.cursor()
+
+            query = """
+                SELECT
+                    c.id, c.nome, c.codinome, c.senha_hash
+                FROM colaboradores c
+                """
+            params = []
+            if colaborador_filter.projeto is not None:
+                query += (
+                    "INNER JOIN projetos_colaboradores pc ON pc.colaborador_id = c.id "
+                )
+            query += "WHERE 1 = 1 "
+            if colaborador_filter.nome is not None:
+                query += "AND LOWER(c.nome) LIKE LOWER(?) "
+                params.append(f"%{colaborador_filter.nome}%")
+
+            if colaborador_filter.projeto is not None:
+                query += "AND pc.projeto_id = ? "
+                params.append(colaborador_filter.projeto.id)
+
+            query += ";"
+
+            cursor.execute(query, tuple(params))
+            rows = cursor.fetchall()
+
+            colaboradores = []
+            for row in rows:
+                id, nome, codinome, senha_hash = row
+                colaboradores.append(ColaboradorDTO(id, nome, codinome, senha_hash))
+
+            connection.commit()
+            return colaboradores

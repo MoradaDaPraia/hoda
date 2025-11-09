@@ -15,6 +15,7 @@ class ProjetoPresenter(Presenter):
                 ("Sair", None),
                 ("Criar", self.criar),
                 ("Consultar", self.consultar),
+                ("Listar Colaboradores", self.listar_colaboradores),
             ],
         )
 
@@ -51,3 +52,33 @@ class ProjetoPresenter(Presenter):
                 continue
 
         print(f"{projeto}\n")
+
+    def listar_colaboradores(self) -> None:
+        colaboradores = None
+        while colaboradores is None:
+            print("Listar Colaboradores do Projeto")
+            print("Insira o codinome do projeto")
+            codinome = input(": ")
+
+            projeto = None
+            try:
+                projeto = self.projeto_service.consultar_projeto(codinome)
+            except ServiceException as e:
+                print(f"ERRO: {e}\n")
+                continue
+
+            try:
+                colaboradores = self.projeto_service.listar_colaboradores_do_projeto(
+                    projeto
+                )
+            except ServiceException as e:
+                print(f"ERRO: {e}\n")
+                continue
+
+            if len(colaboradores) == 0:
+                print("Nenhum colaborador foi encontrado.")
+            else:
+                for colaborador in colaboradores:
+                    print(colaborador)
+
+            print()

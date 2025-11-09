@@ -1,5 +1,6 @@
 from dtos.colaborador import ColaboradorDTO
 from exceptions.service import ServiceException
+from filters.colaborador import ColaboradorFilter
 from repositories.colaboradores import ColaboradoresRepository
 import hashlib
 
@@ -54,3 +55,10 @@ class ColaboradorService:
         )
 
         return colaborador
+
+    def listar_colaboradores(
+        self, colaborador_filter: ColaboradorFilter
+    ) -> list[ColaboradorDTO]:
+        return self.colaboradores_repository.listar_colaboradores_por_filtro(
+            colaborador_filter
+        )

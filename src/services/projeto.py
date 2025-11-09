@@ -1,6 +1,9 @@
+from dtos.colaborador import ColaboradorDTO
 from dtos.projeto import ProjetoDTO
 from exceptions.service import ServiceException
+from filters.colaborador import ColaboradorFilter
 from repositories.projetos import ProjetosRepository
+from services.colaborador import ColaboradorService
 
 NOME_DO_PROJETO_INVALIDO = "Nome do projeto inválido, deve ter entre 2-32 caracteres."
 CODINOME_DO_PROJETO_INVALIDO = "Codinome do projeto inválido, deve ter entre 2-8 caracteres de apenas letras maiúsculas."
@@ -12,8 +15,13 @@ ESTE_PROJETO_NAO_EXISTE = "Este projeto não existe."
 
 
 class ProjetoService:
-    def __init__(self, projetos_repository: ProjetosRepository) -> None:
+    def __init__(
+        self,
+        projetos_repository: ProjetosRepository,
+        colaborador_service: ColaboradorService,
+    ) -> None:
         self.projetos_repository = projetos_repository
+        self.colaborador_service = colaborador_service
 
     def __validar_nome(self, nome: str) -> bool:
         return len(nome) >= 2 and len(nome) <= 32
@@ -56,3 +64,10 @@ class ProjetoService:
             raise ServiceException(ESTE_PROJETO_NAO_EXISTE)
 
         return projeto
+
+    def listar_colaboradores_do_projeto(
+        self, projeto: ProjetoDTO
+    ) -> list[ColaboradorDTO]:
+        return self.colaborador_service.listar_colaboradores(
+            ColaboradorFilter(projeto=projeto)
+        )
