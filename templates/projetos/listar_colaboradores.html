@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block body %}
+<div class="container">
+    <h2>Colaboradores do projeto {{ codinome }}</h2>
+    {% if colaboradores|length == 0 %}
+        <p>Nenhum colaborador encontrado.</p>
+    {% else %}
+        <ul>
+            {% for c in colaboradores %}
+                <li>{{ c.nome }} ({{ c.codinome }})</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <a href="/projetos/{{ codinome }}/adicionar_colaborador" class="btn btn-primary">Adicionar</a>
+</div>
+{% endblock %}
+

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block body %}
+    <div class="container">
+        <h2>Colaboradores</h2>
+        <form method="get" class="mb-3">
+            <input name="nome" placeholder="Filtrar pelo nome" class="form-control" />
+            <button class="btn btn-primary mt-2">Filtrar</button>
+        </form>
+
+        {% if colaboradores|length == 0 %}
+            <p>Nenhum colaborador encontrado.</p>
+        {% else %}
+            <ul>
+                {% for c in colaboradores %}
+                    <li>{{ c.nome }} ({{ c.codinome }})</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <a href="/colaboradores/criar"><button class="btn btn-success mt-2">Criar Novo</button></a>
+    </div>
+{% endblock %}

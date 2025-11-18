@@ -49,6 +49,27 @@ class ProjetosRepository(Repository):
             connection.commit()
             return ProjetoDTO(id, nome, codinome_retornado, descricao)
 
+    def listar_projetos(self) -> list[ProjetoDTO]:
+        with self.connect() as connection:
+            cursor = connection.cursor()
+
+            cursor.execute(
+                """
+                SELECT
+                    id, nome, codinome, descricao
+                FROM projetos;
+                """,
+                (),
+            )
+            rows = cursor.fetchall()
+            connection.commit()
+
+            projetos = []
+            for id, nome, codinome_retornado, descricao in rows:
+                projetos.append(ProjetoDTO(id, nome, codinome_retornado, descricao))
+
+            return projetos
+
     def adicionar_colaborador_ao_projeto(
         self, projeto: ProjetoDTO, colaborador: ColaboradorDTO
     ) -> None:

@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block body %}
+<div class="container">
+    <h2>Projeto: {{ projeto.nome }}</h2>
+    <p>Codinome: {{ projeto.codinome }}</p>
+    <p>Descrição: {{ projeto.descricao }}</p>
+    <a href="/projetos/{{ projeto.codinome }}/colaboradores">Listar Colaboradores</a>
+</div>
+{% endblock %}
+

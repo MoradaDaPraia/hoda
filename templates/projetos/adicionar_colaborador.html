@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block body %}
+<div class="container">
+    <h2>Adicionar Colaborador ao projeto {{ codinome }}</h2>
+    <form method="post">
+        <div class="mb-3">
+            <label>Codinome do colaborador</label>
+            <input name="colaborador_codinome" class="form-control" />
+        </div>
+        <button class="btn btn-primary">Adicionar</button>
+    </form>
+</div>
+{% endblock %}
+

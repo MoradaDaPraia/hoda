@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block body %}
+    <div class="container">
+        <h2 class="fs-3">Projetos</h2>
+
+        {% if projetos|length == 0 %}
+            <p>Nenhum projeto encontrado.</p>
+        {% else %}
+            <ul>
+                {% for p in projetos %}
+                <li class="fs-4"><a href="/projetos/consultar/{{ p.codinome }}">{{ p.nome }}</a></li>
+                    <li>{{ p.codinome }}</li>
+                    <li>{{ p.descricao }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <a href="/projetos/criar"><button class="btn btn-success mt-2">Criar Novo</button></a>
+    </div>
+{% endblock %}
+

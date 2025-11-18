@@ -65,6 +65,9 @@ class ProjetoService:
 
         return projeto
 
+    def listar_projetos(self) -> list[ProjetoDTO]:
+        return self.projetos_repository.listar_projetos()
+
     def listar_colaboradores_do_projeto(self, codinome: str) -> list[ColaboradorDTO]:
         projeto = self.consultar_projeto(codinome)
         return self.colaborador_service.listar_colaboradores(

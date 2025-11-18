@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block body %}
+<div class="container">
+    <h2 class="fs-2">Criar Colaborador</h2>
+    <form method="post">
+        <div class="mb-3">
+            <label>Nome</label>
+            <input name="nome" class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label>Codinome</label>
+            <input name="codinome" class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label>Senha (opcional)</label>
+            <input type="password" name="senha" class="form-control" />
+        </div>
+        <button class="btn btn-primary">Criar</button>
+    </form>
+</div>
+{% endblock %}
